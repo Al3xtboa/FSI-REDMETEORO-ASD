@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.2.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="temperaturas" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce5ce469-37a4-44c8-8339-015291a1c34f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="redmeteoro.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="283"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="706"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<parameter name="estacion" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT station, nombre, direccion,
+ date as fecha, ROUND(AVG(tempout),2) as temp_promedio
+FROM mediciones, estacion
+WHERE numero = station 
+AND station =  $P{estacion} 
+GROUP BY date]]>
+	</queryString>
+	<field name="station" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="station"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mediciones"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estacion"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estacion"/>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mediciones"/>
+	</field>
+	<field name="temp_promedio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="temp_promedio"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="18" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement x="-2" y="34" width="572" height="30" uuid="8698f9a7-c733-4db3-9118-62a8e1717471"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Temperaturas Promedio de la Estación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-10" y="2" width="570" height="30" forecolor="#FA0A3E" uuid="9997e087-c3b9-4af1-9297-5712628a9fe2"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Red  Metereológica CUCSur]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="105" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="35" y="12" width="78" height="17" backcolor="#F2D6D5" uuid="06bab864-0c23-45b6-9a65-ede7ef65cb2a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c5b6bb14-504a-4031-a25e-0271c0f9ef4e"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="181" y="12" width="78" height="17" backcolor="#F2D6D5" uuid="1c713f64-7f61-46ee-aa03-3aef3246488a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3feb4b2a-fdf9-4f51-a1f4-004080b1cbd1"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="181" y="34" width="78" height="17" backcolor="#F2D6D5" uuid="aa5330ab-d302-41fd-bc4c-dba7bec5fc7d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="856856fc-6542-4e24-9783-b01d778b6b2c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="113" y="12" width="50" height="17" backcolor="#FAB796" uuid="eb7c0a88-cf75-4544-94c5-6d074f289249">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c5b6bb14-504a-4031-a25e-0271c0f9ef4e"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{station}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="12" width="270" height="17" uuid="1c90c590-9d4a-403d-a8ff-41dfdb181ae7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3feb4b2a-fdf9-4f51-a1f4-004080b1cbd1"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="34" width="268" height="17" uuid="c456262b-65fe-41bf-bac5-7f8374eb4f46">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="856856fc-6542-4e24-9783-b01d778b6b2c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="140" y="64" width="100" height="26" backcolor="#F2D6D5" uuid="2f35b76a-ca8c-43f2-a07d-06801c18527c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c79393e-7610-4f4e-8612-513135d3f097"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="65" width="100" height="26" backcolor="#F2D6D5" uuid="bf3357ba-61de-4208-bc8f-50d93df8f68e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="def57759-2bc0-4ac1-aa03-1fee27dc0756"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TEMPERATURA PROMEDIO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="7" y="95" width="563" height="5" backcolor="#FA0C07" uuid="d5088bad-7ca9-4294-8d9c-ea53732ac1fe"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="7" y="55" width="563" height="5" backcolor="#FA0C07" uuid="f8748e7f-f6d1-453e-86cb-31686ce91c7e"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="9" y="4" width="563" height="5" backcolor="#FA0C07" uuid="94482342-dcf6-47cb-bfa3-3000df7601e3"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField pattern="dd/MM7yyyy">
+				<reportElement x="140" y="0" width="100" height="30" uuid="11add05d-5a25-43a2-a0bb-87cc9b2b0426">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c79393e-7610-4f4e-8612-513135d3f097"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="0" width="80" height="30" uuid="8a1668e9-be94-4e05-bd94-d871511d13b1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="def57759-2bc0-4ac1-aa03-1fee27dc0756"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{temp_promedio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
