@@ -1,4 +1,6 @@
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
@@ -21,11 +23,13 @@ public class FRegistrados extends javax.swing.JFrame {
 
     
 
-    ////        if (cnx.conectar("localhost", "redmeteoro", "manzana", "1234") == 1) {
-////        } else {
-////            JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
-////            System.exit(0);
-////        }
+            if (cnx.conectar("localhost", "redmeteoro", "manzana", "1234") == 1) {
+                cnx.entablar(Queries.todo, TMediciones);
+                cnx.seleccionar(Queries.estaciones, CBEstacion);
+        } else {
+            JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
+            System.exit(0);
+        }
 
     }
 
@@ -42,8 +46,8 @@ public class FRegistrados extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         jPanel5 = new javax.swing.JPanel();
         BTodo = new javax.swing.JToggleButton();
-        B1 = new javax.swing.JToggleButton();
-        B2 = new javax.swing.JToggleButton();
+        BPromedio = new javax.swing.JToggleButton();
+        Bmaxmin = new javax.swing.JToggleButton();
         B3 = new javax.swing.JToggleButton();
         B4 = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
@@ -70,22 +74,45 @@ public class FRegistrados extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Consultas Predefinidas"));
-        jPanel5.setMaximumSize(new java.awt.Dimension(400, 100));
-        jPanel5.setMinimumSize(new java.awt.Dimension(400, 100));
-        jPanel5.setPreferredSize(new java.awt.Dimension(400, 100));
-        jPanel5.setLayout(new java.awt.GridLayout());
+        jPanel5.setMaximumSize(new java.awt.Dimension(600, 100));
+        jPanel5.setMinimumSize(new java.awt.Dimension(600, 100));
+        jPanel5.setPreferredSize(new java.awt.Dimension(600, 100));
+        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
 
         buttonGroup1.add(BTodo);
         BTodo.setText("TODO");
+        BTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTodoActionPerformed(evt);
+            }
+        });
         jPanel5.add(BTodo);
 
-        buttonGroup1.add(B1);
-        jPanel5.add(B1);
+        buttonGroup1.add(BPromedio);
+        BPromedio.setText("PROMEDIO");
+        BPromedio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BPromedioActionPerformed(evt);
+            }
+        });
+        jPanel5.add(BPromedio);
 
-        buttonGroup1.add(B2);
-        jPanel5.add(B2);
+        buttonGroup1.add(Bmaxmin);
+        Bmaxmin.setText("MAX-MIN");
+        Bmaxmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BmaxminActionPerformed(evt);
+            }
+        });
+        jPanel5.add(Bmaxmin);
 
         buttonGroup1.add(B3);
+        B3.setText("HOY");
+        B3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                B3ActionPerformed(evt);
+            }
+        });
         jPanel5.add(B3);
 
         buttonGroup1.add(B4);
@@ -120,6 +147,11 @@ public class FRegistrados extends javax.swing.JFrame {
         BBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BBuscar.setPreferredSize(new java.awt.Dimension(114, 50));
         BBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -272,8 +304,68 @@ public class FRegistrados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BFiltrarActionPerformed
-
+        String seleccion = CBEstacion.getSelectedItem().toString();
+        if (seleccion.equals("Todos")) {
+            cnx.entablar(Queries.todo, TMediciones);
+        } else {
+            String sql = String.format(Queries.por_estaci, seleccion);
+            cnx.entablar(sql, TMediciones);
+        }
     }//GEN-LAST:event_BFiltrarActionPerformed
+
+    private void BTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTodoActionPerformed
+        // TODO add your handling code here:
+        cnx.entablar(Queries.todo, TMediciones);
+        
+    }//GEN-LAST:event_BTodoActionPerformed
+
+    private void BPromedioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BPromedioActionPerformed
+        // TODO add your handling code here:
+        String seleccion = CBEstacion.getSelectedItem().toString();
+        if (seleccion.equals("Todos")) {
+            seleccion="";
+        }
+            String sql = String.format(Queries.promedio, seleccion);
+            cnx.entablar(sql, TMediciones);
+        
+    }//GEN-LAST:event_BPromedioActionPerformed
+
+    private void BBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBuscarActionPerformed
+        // TODO add your handling code here:
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date fi = (Date)SFechaIni.getValue();
+        Date ff = (Date)SFechaFin.getValue();
+        
+        String fecha_ini = sdf.format(fi);
+        String fecha_fin = sdf.format(ff);
+        
+        String sql = String.format(Queries.periodo, fecha_ini,fecha_fin);
+        cnx.entablar(sql, TMediciones);
+
+    }//GEN-LAST:event_BBuscarActionPerformed
+
+    private void BmaxminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BmaxminActionPerformed
+        // TODO add your handling code here:
+            String seleccion = CBEstacion.getSelectedItem().toString();
+        if (seleccion.equals("Todos")) {
+            seleccion="";
+        }
+            String sql = String.format(Queries.max_min_semanda, seleccion);
+            cnx.entablar(sql, TMediciones);
+        
+    }//GEN-LAST:event_BmaxminActionPerformed
+
+    private void B3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B3ActionPerformed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+            String seleccion = CBEstacion.getSelectedItem().toString();
+        if (seleccion.equals("Todos")) {
+            seleccion="";
+        }
+            String sql = String.format(Queries.hoy, seleccion);
+            cnx.entablar(sql, TMediciones);
+        
+    }//GEN-LAST:event_B3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -311,13 +403,13 @@ public class FRegistrados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton B1;
-    private javax.swing.JToggleButton B2;
     private javax.swing.JToggleButton B3;
     private javax.swing.JToggleButton B4;
     private javax.swing.JButton BBuscar;
     private javax.swing.JButton BFiltrar;
+    private javax.swing.JToggleButton BPromedio;
     private javax.swing.JToggleButton BTodo;
+    private javax.swing.JToggleButton Bmaxmin;
     private javax.swing.JComboBox CBEstacion;
     private javax.swing.JLabel LUsuario;
     private javax.swing.JSpinner SFechaFin;
