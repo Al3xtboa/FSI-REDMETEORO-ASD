@@ -10,7 +10,7 @@ public class FAdministrador extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
-//        if (cnx.conectar("localhost", "redmeteoro", "root", "") == 1) {
+//        if (cnx.conectar("localhost", "redmeteoro", "manzana", "1234") == 1) {
 //        } else {
 //            JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
 //            System.exit(0);

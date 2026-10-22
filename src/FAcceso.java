@@ -1,26 +1,18 @@
 
 import javax.swing.JOptionPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author drlias
- */
 public class FAcceso extends javax.swing.JFrame {
 
     Conexion cnx = new Conexion();
+    String rol = "SELECT rol FROM usuarios WHERE nom_usu = '%s' AND nip ='%s'";
+    int intentos = 0;
     
     public FAcceso() {
         initComponents();
         setLocationRelativeTo(this);
         
-        if (cnx.conectar("localhost", "redmeteoro", "root", "") == 1) {
-        } else {
+        if (cnx.conectar("localhost", "redmeteoro", "manzana", "1234") == 0) {
+//        } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
         }
@@ -57,6 +49,11 @@ public class FAcceso extends javax.swing.JFrame {
         jLabel2.setText("NIP");
 
         BAceptar.setText("ACEPTAR");
+        BAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BAceptarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -91,6 +88,11 @@ public class FAcceso extends javax.swing.JFrame {
         );
 
         BCancelar.setText("CANCELAR");
+        BCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel5.setText("INICIAR SESION");
@@ -142,6 +144,43 @@ public class FAcceso extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAceptarActionPerformed
+        // TODO add your handling code here:
+        String usr = TUsuario.getText();
+        String nip = TPassword.getText();
+        
+        String sql = String.format(rol, usr,nip);
+        String tipo = cnx.obtenerDato(sql);
+        
+        switch (tipo) {
+            case "Admin":
+                FAdministrador faa = new FAdministrador();
+                cnx.desconectar();
+                this.dispose();
+                faa.setVisible(true);
+                break;
+            case "Visitante":
+                FRegistrados fv = new FRegistrados();
+                cnx.desconectar();
+                this.dispose();
+                fv.setVisible(true);
+                break;    
+            case "":
+                JOptionPane.showMessageDialog(this, "Credenciales incorrectas");
+                intentos++;
+                    if (intentos>=3) {
+                        JOptionPane.showMessageDialog(this,"Numero de intentos exedidos siendo baneado");
+                        System.exit(0);
+                }
+                break;
+            
+        }
+    }//GEN-LAST:event_BAceptarActionPerformed
+
+    private void BCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BCancelarActionPerformed
 
     /**
      * @param args the command line arguments
